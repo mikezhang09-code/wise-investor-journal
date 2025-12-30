@@ -1,20 +1,24 @@
-import { TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
+import { TrendingUp, PenLine } from "lucide-react";
 import { Button } from "./ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
+  const { user, isAdmin } = useAuth();
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 lg:px-8">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
+          <Link to="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-gradient-gold flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-navy" />
             </div>
             <span className="font-serif text-xl font-semibold text-foreground">
               Investor's Mind
             </span>
-          </a>
+          </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
@@ -33,9 +37,26 @@ const Header = () => {
           </div>
 
           {/* CTA */}
-          <Button variant="gold" size="sm">
-            Subscribe
-          </Button>
+          <div className="flex items-center gap-3">
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="outline" size="sm">
+                  <PenLine className="w-4 h-4 mr-2" />
+                  Write
+                </Button>
+              </Link>
+            )}
+            {!user && (
+              <Link to="/auth">
+                <Button variant="ghost" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+            )}
+            <Button variant="gold" size="sm">
+              Subscribe
+            </Button>
+          </div>
         </nav>
       </div>
     </header>
