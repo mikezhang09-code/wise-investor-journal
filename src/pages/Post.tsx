@@ -125,13 +125,24 @@ const Post = () => {
             )}
 
             {/* Content */}
-            <div className="prose prose-lg max-w-none text-foreground">
-              {post.content.split("\n").map((paragraph, index) => (
-                <p key={index} className="mb-4 text-muted-foreground leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+            <div 
+              className="prose prose-lg max-w-none
+                [&_h1]:text-3xl [&_h1]:font-serif [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-8 [&_h1]:mb-4
+                [&_h2]:text-2xl [&_h2]:font-serif [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-6 [&_h2]:mb-3
+                [&_h3]:text-xl [&_h3]:font-serif [&_h3]:font-bold [&_h3]:text-foreground [&_h3]:mt-5 [&_h3]:mb-2
+                [&_p]:text-muted-foreground [&_p]:mb-4 [&_p]:leading-relaxed
+                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ul]:text-muted-foreground
+                [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-4 [&_ol]:text-muted-foreground
+                [&_li]:mb-1
+                [&_blockquote]:border-l-4 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted-foreground [&_blockquote]:my-6
+                [&_pre]:bg-muted [&_pre]:p-4 [&_pre]:rounded-md [&_pre]:overflow-x-auto [&_pre]:my-4
+                [&_code]:bg-muted [&_code]:px-1 [&_code]:rounded [&_code]:font-mono [&_code]:text-sm
+                [&_a]:text-accent [&_a]:underline [&_a:hover]:text-accent/80
+                [&_strong]:text-foreground [&_strong]:font-semibold
+                [&_em]:italic
+              "
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
           </article>
         </main>
         <Footer />

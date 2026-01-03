@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { TrendingUp, ArrowLeft, Save, Eye } from "lucide-react";
+import { ArrowLeft, Save, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import RichTextEditor from "@/components/RichTextEditor";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -344,14 +345,11 @@ const PostEditor = () => {
 
             {/* Content */}
             <div className="space-y-2">
-              <Label htmlFor="content">Content</Label>
-              <Textarea
-                id="content"
+              <Label>Content</Label>
+              <RichTextEditor
+                content={content}
+                onChange={setContent}
                 placeholder="Write your investment thoughts here..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                rows={20}
-                className="font-mono text-sm"
               />
               {errors.content && (
                 <p className="text-sm text-destructive">{errors.content}</p>
