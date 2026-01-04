@@ -2,6 +2,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
+import { Markdown } from "tiptap-markdown";
 import {
   Bold,
   Italic,
@@ -15,10 +16,19 @@ import {
   Code,
   Link as LinkIcon,
   Unlink,
+  FileCode,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 interface RichTextEditorProps {
   content: string;
@@ -27,6 +37,9 @@ interface RichTextEditorProps {
 }
 
 const RichTextEditor = ({ content, onChange, placeholder = "Start writing..." }: RichTextEditorProps) => {
+  const [showMarkdownDialog, setShowMarkdownDialog] = useState(false);
+  const [markdownInput, setMarkdownInput] = useState("");
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -42,6 +55,11 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing..." }:
         HTMLAttributes: {
           class: "text-accent underline",
         },
+      }),
+      Markdown.configure({
+        html: true,
+        transformPastedText: true,
+        transformCopiedText: false,
       }),
     ],
     content,
@@ -68,6 +86,13 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing..." }:
     }
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
+
+  const handleImportMarkdown = useCallback(() => {
+    if (!editor || !markdownInput.trim()) return;
+    editor.commands.setContent(markdownInput);
+    setMarkdownInput("");
+    setShowMarkdownDialog(false);
+  }, [editor, markdownInput]);
 
   if (!editor) {
     return null;
@@ -200,6 +225,15 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing..." }:
             <Unlink className="h-4 w-4" />
           </ToolbarButton>
         )}
+
+        <div className="w-px h-6 bg-border mx-1" />
+
+        <ToolbarButton
+          onClick={() => setShowMarkdownDialog(true)}
+          title="Import Markdown"
+        >
+          <FileCode className="h-4 w-4" />
+        </ToolbarButton>
       </div>
 
       {/* Editor */}
@@ -225,6 +259,29 @@ const RichTextEditor = ({ content, onChange, placeholder = "Start writing..." }:
           [&_.ProseMirror_a]:text-accent [&_.ProseMirror_a]:underline
         "
       />
+
+      {/* Markdown Import Dialog */}
+      <Dialog open={showMarkdownDialog} onOpenChange={setShowMarkdownDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Import Markdown</DialogTitle>
+          </DialogHeader>
+          <Textarea
+            value={markdownInput}
+            onChange={(e) => setMarkdownInput(e.target.value)}
+            placeholder="Paste your markdown content here..."
+            className="min-h-[300px] font-mono text-sm"
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowMarkdownDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleImportMarkdown}>
+              Import
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
