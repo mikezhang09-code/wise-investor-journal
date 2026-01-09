@@ -71,3 +71,7 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## HuggingFace Spaces Deployment
+
+See [HF_SPACES.md](./HF_SPACES.md) for documentation on deploying to HuggingFace Spaces.

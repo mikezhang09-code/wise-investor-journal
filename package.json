@@ -8,7 +8,9 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:space": "VITE_BASE_PATH=/proxy/4173/ VITE_ROUTER_BASE=/proxy/4173/ vite build",
+    "preview:space": "vite preview --host 0.0.0.0 --port 4173"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
